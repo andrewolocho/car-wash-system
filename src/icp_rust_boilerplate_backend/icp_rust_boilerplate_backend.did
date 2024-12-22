@@ -1,0 +1,78 @@
+type CarWashCenter = record {
+  id : nat64;
+  contact : text;
+  name : text;
+  created_at : nat64;
+  email : text;
+  capacity : nat64;
+  location : text;
+};
+type CreateCarWashCenterPayload = record {
+  contact : text;
+  name : text;
+  email : text;
+  capacity : nat64;
+  location : text;
+};
+type CreateServicePayload = record {
+  duration : nat64;
+  service_type : text;
+  vehicle_id : nat64;
+  car_wash_id : nat64;
+  price : float64;
+};
+type Expense = record {
+  id : nat64;
+  date : nat64;
+  description : text;
+  car_wash_id : nat64;
+  category : text;
+  amount : float64;
+};
+type Message = variant {
+  Error : text;
+  InvalidPayload : text;
+  NotFound : text;
+  Success : text;
+};
+type RecordExpensePayload = record {
+  description : text;
+  car_wash_id : nat64;
+  category : text;
+  amount : float64;
+};
+type RegisterVehiclePayload = record {
+  car_wash_id : nat64;
+  license_plate : text;
+  vehicle_type : text;
+};
+type Result = variant { Ok : float64; Err : Message };
+type Result_1 = variant { Ok : CarWashCenter; Err : Message };
+type Result_2 = variant { Ok : Service; Err : Message };
+type Result_3 = variant { Ok : Expense; Err : Message };
+type Result_4 = variant { Ok : Vehicle; Err : Message };
+type Service = record {
+  id : nat64;
+  duration : nat64;
+  service_type : text;
+  vehicle_id : nat64;
+  car_wash_id : nat64;
+  price : float64;
+  completed_at : opt nat64;
+};
+type Vehicle = record {
+  id : nat64;
+  status : text;
+  car_wash_id : nat64;
+  license_plate : text;
+  arrival_time : nat64;
+  vehicle_type : text;
+};
+service : {
+  calculate_total_expenses : (nat64) -> (Result) query;
+  calculate_total_revenue : (nat64) -> (Result) query;
+  create_car_wash_center : (CreateCarWashCenterPayload) -> (Result_1);
+  create_service : (CreateServicePayload) -> (Result_2);
+  record_expense : (RecordExpensePayload) -> (Result_3);
+  register_vehicle : (RegisterVehiclePayload) -> (Result_4);
+}
